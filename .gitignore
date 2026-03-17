@@ -43,3 +43,4 @@ __pycache__/
 # Temporary files
 *.tmp
 *.bak
+conversation_transcript.jsonl
