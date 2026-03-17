@@ -1,0 +1,45 @@
+# Build artifacts
+build/
+obj_dir/
+*.o
+*.elf
+*.hex
+*.vvp
+*.vcd
+*.log
+
+# Verilator generated
+*.d
+*.mk
+*.cpp
+*.h
+Makefile_obj
+
+# Synthesis outputs
+syn/*.v
+syn/*.json
+syn/*.rpt
+!syn/synth.tcl
+!syn/constraints.sdc
+
+# PnR outputs
+pnr/runs/
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+
+# Temporary files
+*.tmp
+*.bak

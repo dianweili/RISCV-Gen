@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:theopenroadproject.org)",
+      "WebFetch(domain:openlane2.readthedocs.io)",
+      "WebFetch(domain:github.com)",
+      "Bash(git -C /d/Project/RISCV-Gen log --oneline -10)",
+      "Bash(verilator --version)",
+      "Bash(riscv32-unknown-elf-gcc --version)",
+      "Bash(pacman -Ss verilator)",
+      "Bash(wsl --status)",
+      "Bash(wsl:*)",
+      "Bash(chmod:*)"
+    ]
+  }
+}
