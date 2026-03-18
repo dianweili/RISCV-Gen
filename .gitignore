@@ -44,4 +44,3 @@ __pycache__/
 *.tmp
 *.bak
 conversation_transcript.jsonl
-conversation_transcript.md
