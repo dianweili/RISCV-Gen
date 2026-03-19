@@ -25,8 +25,13 @@ module regfile (
   end
 
   // Asynchronous read; x0 always returns 0
-  assign rs1_data = (rs1_addr == 5'h0) ? 32'h0 : regs[rs1_addr];
-  assign rs2_data = (rs2_addr == 5'h0) ? 32'h0 : regs[rs2_addr];
+  // Write-before-read bypass: forward WB write to ID read in same cycle
+  assign rs1_data = (rs1_addr == 5'h0) ? 32'h0 :
+                    (wen && rd_addr == rs1_addr) ? rd_data :
+                    regs[rs1_addr];
+  assign rs2_data = (rs2_addr == 5'h0) ? 32'h0 :
+                    (wen && rd_addr == rs2_addr) ? rd_data :
+                    regs[rs2_addr];
 
   // Initialize all registers to 0 for simulation
   initial begin

@@ -17,7 +17,7 @@ LD = $(RISCV_PREFIX)ld
 OBJCOPY = $(RISCV_PREFIX)objcopy
 
 # Verilator flags
-VFLAGS = --cc --exe --build -Wall --trace
+VFLAGS = --cc --exe --build --main -Wall --trace --timing -Wno-UNUSEDPARAM -Wno-BLKSEQ -Wno-UNUSEDSIGNAL
 VFLAGS += -I$(RTL_DIR)/pkg
 VFLAGS += --top-module
 
@@ -95,9 +95,9 @@ test_top: $(BUILD_DIR)
 # Compile assembly test
 $(BUILD_DIR)/%.hex: $(VERIF_DIR)/asm/%.S $(BUILD_DIR)
 	@echo "Compiling $<..."
-	$(AS) -march=rv32i -mabi=ilp32 -o $(BUILD_DIR)/$*.o $<
-	$(LD) -T $(VERIF_DIR)/scripts/linker.ld -o $(BUILD_DIR)/$*.elf $(BUILD_DIR)/$*.o
-	$(OBJCOPY) -O verilog $(BUILD_DIR)/$*.elf $@
+	riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -c -o $(BUILD_DIR)/$*.o $<
+	riscv64-unknown-elf-ld -m elf32lriscv -T $(VERIF_DIR)/scripts/linker.ld -o $(BUILD_DIR)/$*.elf $(BUILD_DIR)/$*.o
+	riscv64-unknown-elf-objcopy -O verilog --verilog-data-width=4 $(BUILD_DIR)/$*.elf $@
 
 # Run assembly tests
 test_asm: test_top $(addprefix $(BUILD_DIR)/, $(addsuffix .hex, $(ASM_TESTS)))

@@ -34,6 +34,7 @@ module ex_stage
 
   logic [31:0] alu_a, alu_b;
   logic [31:0] rs1_fwd, rs2_fwd;
+  logic [31:0] jalr_sum;
 
   // -----------------------------------------------------------------------
   // Data forwarding muxes
@@ -107,6 +108,7 @@ module ex_stage
   // JALR resolution
   // -----------------------------------------------------------------------
   assign jalr_ex     = (opcode == OP_JALR);
-  assign jalr_target = {(rs1_fwd + imm)[31:1], 1'b0};  // clear LSB
+  assign jalr_sum    = rs1_fwd + imm;
+  assign jalr_target = {jalr_sum[31:1], 1'b0};  // clear LSB
 
 endmodule

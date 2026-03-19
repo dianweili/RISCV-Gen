@@ -24,9 +24,8 @@ module tb_riscv_top;
   // DUT instantiation
   // -----------------------------------------------------------------------
   riscv_top #(
-    .IMEM_DEPTH     (4096),
-    .DMEM_DEPTH     (4096),
-    .IMEM_INIT_FILE (HEX_FILE)
+    .IMEM_DEPTH (4096),
+    .DMEM_DEPTH (4096)
   ) dut (
     .clk   (clk),
     .rst_n (rst_n)
@@ -35,8 +34,9 @@ module tb_riscv_top;
   // Hex file parameter (override from command line: +hex=<file>)
   string HEX_FILE;
   initial begin
-    if (!$value$plusargs("hex=%s", HEX_FILE))
-      HEX_FILE = "";
+    #1;  // ensure imem default init completes first
+    if ($value$plusargs("hex=%s", HEX_FILE))
+      $readmemh(HEX_FILE, dut.u_imem.mem);
   end
 
   // -----------------------------------------------------------------------

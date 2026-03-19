@@ -176,8 +176,8 @@ module riscv_top
     .alu_op             (id_ex_reg.alu_op),
     .srca_sel           (id_ex_reg.srca_sel),
     .srcb_sel           (id_ex_reg.srcb_sel),
-    .funct3             (if_id_reg.inst[14:12]),  // pass through for branch
-    .opcode             (if_id_reg.inst[6:0]),
+    .funct3             (id_ex_reg.funct3),
+    .opcode             (id_ex_reg.opcode),
     .fwd_a              (fwd_a),
     .fwd_b              (fwd_b),
     .ex_mem_alu_result  (ex_mem_reg.alu_result),
@@ -337,6 +337,8 @@ module riscv_top
     id_ex_next.pc_sel    = id_pc_sel_hint;
     id_ex_next.csr_op    = id_csr_op;
     id_ex_next.csr_addr  = id_csr_addr;
+    id_ex_next.funct3    = if_id_reg.inst[14:12];
+    id_ex_next.opcode    = if_id_reg.inst[6:0];
     id_ex_next.valid     = if_id_reg.valid;
   end
 

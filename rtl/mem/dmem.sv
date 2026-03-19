@@ -25,10 +25,8 @@ module dmem #(
     if (wen[3]) mem[word_addr][31:24] <= wdata[31:24];
   end
 
-  // Synchronous read
-  always_ff @(posedge clk) begin
-    rdata <= mem[word_addr];
-  end
+  // Asynchronous read (combinational)
+  assign rdata = mem[word_addr];
 
   // Initialize to zero
   initial begin

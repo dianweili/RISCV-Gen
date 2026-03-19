@@ -42,6 +42,8 @@ package pipeline_pkg;
     pc_sel_e      pc_sel;
     csr_op_e      csr_op;
     logic [11:0]  csr_addr;
+    logic [2:0]   funct3;
+    logic [6:0]   opcode;
     logic         valid;
   } id_ex_t;
 
@@ -109,6 +111,8 @@ package pipeline_pkg;
     b.pc_sel   = PC_PLUS4;
     b.csr_op   = CSR_NONE;
     b.csr_addr = 12'h0;
+    b.funct3   = 3'h0;
+    b.opcode   = 7'h0;
     b.valid    = 1'b0;
     return b;
   endfunction

@@ -16,10 +16,8 @@ module imem #(
   logic [$clog2(DEPTH)-1:0] word_addr;
   assign word_addr = addr[$clog2(DEPTH)+1:2];
 
-  // Synchronous read
-  always_ff @(posedge clk) begin
-    rdata <= mem[word_addr];
-  end
+  // Asynchronous read (combinational)
+  assign rdata = mem[word_addr];
 
   // Initialize from hex file
   initial begin
