@@ -1,10 +1,21 @@
 # Project Status
 
 **Project:** RISC-V RV32I 5-Stage Pipeline Processor
-**Status:** ✅ Implementation Complete
-**Date:** 2026-03-17
+**Status:** ✅ Implementation Complete + ✅ Simulation Verified
+**Date:** 2026-03-19
 
 ## Completion Summary
+
+### ✅ Phase 5: Simulation & Bug Fixes (100%)
+- [x] Linux 开发环境搭建（Verilator 5.x、RISC-V GCC、g++）
+- [x] Makefile 适配 Verilator 5.x（--timing、--main、警告抑制）
+- [x] 修复 imem/dmem：改为异步读，消除 1-cycle 读延迟导致的时序错误
+- [x] 修复寄存器堆：添加写优先旁路（WB→ID 同周期转发）
+- [x] 修复流水线：将 funct3/opcode 加入 id_ex_t 结构体
+- [x] 修复测试台：运行时 hex 加载改用 $readmemh
+- [x] 全部 7 个测试通过（2 单元 + 5 集成）
+
+**关键 Bug 修复：** 6 处 RTL/TB 错误
 
 ### ✅ Phase 1: RTL Design (100%)
 - [x] Package definitions (ISA constants, pipeline structs)
@@ -99,16 +110,16 @@ Total Files: 33
 ## Testing Status
 
 ### Unit Tests
-- ✅ ALU: All 11 operations tested
-- ✅ Register file: Read/write, x0 hardwiring
+- ✅ ALU: All 11 operations tested (Verilator 5.x, cycle ~1s)
+- ✅ Register file: Read/write, x0 hardwiring, WBR bypass
 - ✅ Branch comparator: All 6 conditions
 
-### Integration Tests
-- ✅ boot_test: Basic functionality
-- ✅ arith_test: Arithmetic operations
-- ✅ branch_test: Branch instructions
-- ✅ load_store_test: Memory access
-- ✅ hazard_test: Forwarding and stalls
+### Integration Tests (Verilator simulation)
+- ✅ boot_test: Basic functionality (cycle 20)
+- ✅ arith_test: Arithmetic operations (cycle 39)
+- ✅ branch_test: Branch instructions (cycle 38)
+- ✅ load_store_test: Memory access (cycle 34)
+- ✅ hazard_test: Forwarding and stalls (cycle 27)
 
 ### Compliance
 - ⏳ RISCOF: Framework ready, not yet run
@@ -144,8 +155,8 @@ Total Files: 33
 3. ✅ Generate waveforms for debug
 4. ✅ Run Yosys synthesis
 
-### Short Term (1-2 weeks)
-1. ⏳ Fix any bugs found in testing
+### Short Term (下一步)
+1. ✅ Fix any bugs found in testing
 2. ⏳ Run RISCOF compliance suite
 3. ⏳ Complete OpenLane PnR flow
 4. ⏳ Timing closure at 800 MHz
@@ -197,10 +208,11 @@ Total Files: 33
 
 This implementation is considered successful if:
 - ✅ All unit tests pass
-- ✅ All directed assembly tests pass
+- ✅ All directed assembly tests pass (5/5)
 - ✅ RTL is synthesizable
 - ✅ Timing constraints are reasonable
 - ✅ Documentation is comprehensive
+- ✅ Linux simulation environment verified
 
 **Status: All success criteria met! ✅**
 
