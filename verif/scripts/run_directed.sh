@@ -8,11 +8,12 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# Directories
-RTL_DIR="../rtl"
-TB_DIR="../tb"
-ASM_DIR="../verif/asm"
-BUILD_DIR="./build"
+# Directories (relative to repo root)
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+RTL_DIR="$REPO_ROOT/rtl"
+TB_DIR="$REPO_ROOT/tb"
+ASM_DIR="$REPO_ROOT/verif/asm"
+BUILD_DIR="$REPO_ROOT/build/verif"
 
 # Create build directory
 mkdir -p $BUILD_DIR
@@ -21,10 +22,12 @@ echo "=== RISC-V Directed Test Runner ==="
 
 # Compile RTL with Verilator
 echo "Compiling RTL..."
-verilator --cc --exe --build -Wall \
+verilator --cc --exe --build --main -Wall --trace --timing \
+  -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM -Wno-BLKSEQ \
   --top-module tb_riscv_top \
   -I$RTL_DIR/pkg \
-  $RTL_DIR/pkg/*.sv \
+  $RTL_DIR/pkg/riscv_pkg.sv \
+  $RTL_DIR/pkg/pipeline_pkg.sv \
   $RTL_DIR/units/*.sv \
   $RTL_DIR/core/*.sv \
   $RTL_DIR/mem/*.sv \
@@ -53,13 +56,13 @@ echo ""
 echo "=== Compiling Assembly Tests ==="
 for test in "${TESTS[@]}"; do
   echo "Compiling $test.S..."
-  riscv32-unknown-elf-as -march=rv32i -mabi=ilp32 \
+  riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -c \
     -o $BUILD_DIR/$test.o $ASM_DIR/$test.S
 
-  riscv32-unknown-elf-ld -T linker.ld \
+  riscv64-unknown-elf-ld -m elf32lriscv -T "$REPO_ROOT/verif/scripts/linker.ld" \
     -o $BUILD_DIR/$test.elf $BUILD_DIR/$test.o
 
-  riscv32-unknown-elf-objcopy -O verilog \
+  riscv64-unknown-elf-objcopy -O verilog --verilog-data-width=4 \
     $BUILD_DIR/$test.elf $BUILD_DIR/$test.hex
 done
 

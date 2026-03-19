@@ -23,6 +23,12 @@ module tb_regfile;
   initial clk = 0;
   always #5 clk = ~clk;
 
+  // Waveform dump
+  initial begin
+    $dumpfile("regfile.vcd");
+    $dumpvars(0, tb_regfile);
+  end
+
   initial begin
     $display("=== Register File Unit Test ===");
 

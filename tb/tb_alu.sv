@@ -17,6 +17,12 @@ module tb_alu;
     .result (result)
   );
 
+  // Waveform dump
+  initial begin
+    $dumpfile("alu.vcd");
+    $dumpvars(0, tb_alu);
+  end
+
   initial begin
     $display("=== ALU Unit Test ===");
 
